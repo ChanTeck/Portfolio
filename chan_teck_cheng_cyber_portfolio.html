@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chan Teck Cheng // Futuristic Software Engineering Portfolio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@400;500;600;700&family=Fira+Code:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            bg: '#040810',
+                            card: '#081224',
+                            cyan: '#00f3ff',
+                            purple: '#b026ff',
+                            pink: '#ff007f',
+                            green: '#00ff66',
+                            dim: 'rgba(0, 243, 255, 0.15)'
+                        }
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        rajdhani: ['Rajdhani', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #040810;
+            color: #e2e8f0;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Scanline FX */
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.25) 50%
+            );
+            background-size: 100% 4px;
+            z-index: 40;
+            opacity: 0.6;
+        }
+
+        /* Sci-Fi Grid Overlay */
+        .cyber-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(0, 243, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 243, 255, 0.04) 1px, transparent 1px);
+        }
+
+        /* Glowing HUD Panels */
+        .hud-panel {
+            background: rgba(8, 18, 36, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 243, 255, 0.25);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.05);
+            position: relative;
+            clip-path: polygon(
+                0 12px, 12px 0, 
+                calc(100% - 12px) 0, 100% 12px, 
+                100% calc(100% - 12px), calc(100% - 12px) 100%, 
+                12px 100%, 0 calc(100% - 12px)
+            );
+        }
+
+        .hud-panel:hover {
+            border-color: rgba(0, 243, 255, 0.6);
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.2);
+        }
+
+        /* Cyber Corner Decorators */
+        .corner-tag {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-color: #00f3ff;
+        }
+        .corner-tl { top: 2px; left: 2px; border-top: 2px solid; border-left: 2px solid; }
+        .corner-tr { top: 2px; right: 2px; border-top: 2px solid; border-right: 2px solid; }
+        .corner-bl { bottom: 2px; left: 2px; border-bottom: 2px solid; border-left: 2px solid; }
+        .corner-br { bottom: 2px; right: 2px; border-bottom: 2px solid; border-right: 2px solid; }
+
+        /* Neon Glow Text */
+        .glow-cyan { text-shadow: 0 0 10px rgba(0, 243, 255, 0.7); }
+        .glow-purple { text-shadow: 0 0 10px rgba(176, 38, 255, 0.7); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #040810; }
+        ::-webkit-scrollbar-thumb { background: #00f3ff; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #b026ff; }
+
+        /* Glitch Animation */
+        .glitch {
+            position: relative;
+            display: inline-block;
+        }
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            clip: rect(0, 0, 0, 0);
+        }
+        .glitch:hover::before {
+            left: -2px;
+            text-shadow: 2px 0 #ff007f;
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim 2s infinite linear alternate-reverse;
+        }
+        .glitch:hover::after {
+            left: 2px;
+            text-shadow: -2px 0 #00f3ff;
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim2 2s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(10px, 9999px, 30px, 0); }
+            20% { clip: rect(40px, 9999px, 10px, 0); }
+            40% { clip: rect(25px, 9999px, 50px, 0); }
+            60% { clip: rect(70px, 9999px, 15px, 0); }
+            80% { clip: rect(15px, 9999px, 85px, 0); }
+            100% { clip: rect(55px, 9999px, 35px, 0); }
+        }
+        @keyframes glitch-anim2 {
+            0% { clip: rect(65px, 9999px, 100px, 0); }
+            20% { clip: rect(10px, 9999px, 45px, 0); }
+            40% { clip: rect(50px, 9999px, 20px, 0); }
+            60% { clip: rect(15px, 9999px, 75px, 0); }
+            80% { clip: rect(80px, 9999px, 5px, 0); }
+            100% { clip: rect(30px, 9999px, 60px, 0); }
+        }
+
+        /* Pulse radar beam */
+        @keyframes radar-sweep {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .radar-sweep {
+            animation: radar-sweep 8s linear infinite;
+        }
+    </style>
+</head>
+<body class="cyber-grid min-h-screen text-gray-200">
+
+    <!-- Scanline Toggle Effect Layer -->
+    <div id="scanlineLayer" class="scanlines"></div>
+
+    <!-- Background Canvas for Interactive Particle Net -->
+    <canvas id="particleCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- Top Futuristic Audio & Visual Status Bar -->
+    <header class="sticky top-0 z-50 bg-cyber-bg/80 backdrop-blur-md border-b border-cyber-cyan/20 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <!-- Brand / Callsign -->
+            <div class="flex items-center space-x-3">
+                <div class="w-3 h-3 bg-cyber-cyan rounded-full animate-ping"></div>
+                <span class="font-orbitron font-bold text-cyber-cyan tracking-widest text-lg">CTC//SYSTEMS v2.6</span>
+                <span class="hidden md:inline-block text-xs font-mono px-2 py-0.5 rounded bg-cyber-cyan/10 border border-cyber-cyan/30 text-cyber-cyan">
+                    STATUS: ONLINE
+                </span>
+            </div>
+
+            <!-- Nav Links -->
+            <nav class="hidden md:flex items-center space-x-8 font-orbitron text-sm">
+                <a href="#about" class="hover:text-cyber-cyan transition-colors hover:glow-cyan flex items-center gap-1.5"><i class="fa-solid fa-user-gear text-xs"></i> ABOUT</a>
+                <a href="#projects" class="hover:text-cyber-cyan transition-colors hover:glow-cyan flex items-center gap-1.5"><i class="fa-solid fa-code-branch text-xs"></i> PROJECTS</a>
+                <a href="#skills" class="hover:text-cyber-cyan transition-colors hover:glow-cyan flex items-center gap-1.5"><i class="fa-solid fa-microchip text-xs"></i> SKILLS</a>
+                <a href="#education" class="hover:text-cyber-cyan transition-colors hover:glow-cyan flex items-center gap-1.5"><i class="fa-solid fa-graduation-cap text-xs"></i> EDUCATION</a>
+                <a href="#references" class="hover:text-cyber-cyan transition-colors hover:glow-cyan flex items-center gap-1.5"><i class="fa-solid fa-address-book text-xs"></i> REFERENCES</a>
+            </nav>
+
+            <!-- Interactive HUD Controls -->
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleScanlines()" title="Toggle Scanline FX" class="p-2 text-xs font-mono bg-cyber-card border border-cyber-cyan/40 rounded hover:border-cyber-cyan text-cyber-cyan transition">
+                    <i class="fa-solid fa-tv"></i> <span class="hidden sm:inline">CRT FX</span>
+                </button>
+                <button onclick="toggleSoundEffect()" id="soundBtn" title="Toggle Sound Feedback" class="p-2 text-xs font-mono bg-cyber-card border border-cyber-purple/40 rounded hover:border-cyber-purple text-cyber-purple transition">
+                    <i class="fa-solid fa-volume-high"></i> <span class="hidden sm:inline">AUDIO: ON</span>
+                </button>
+                <a href="#terminal" class="p-2 text-xs font-mono bg-cyber-cyan/10 text-cyber-cyan border border-cyber-cyan rounded hover:bg-cyber-cyan hover:text-cyber-bg font-bold transition">
+                    <i class="fa-solid fa-terminal"></i> CLI
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="relative z-10 max-w-7xl mx-auto px-4 py-8 space-y-16">
+
+        <!-- HERO SECTION -->
+        <section id="about" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-6">
+            <!-- Left Bio Info -->
+            <div class="lg:col-span-8 space-y-6">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyber-green/40 bg-cyber-green/10 text-cyber-green text-xs font-mono">
+                    <span class="w-2 h-2 rounded-full bg-cyber-green animate-pulse"></span>
+                    AVAILABLE FOR SOFTWARE ENGINEERING INTERNSHIP
+                </div>
+
+                <div class="space-y-2">
+                    <h2 class="font-mono text-sm tracking-widest text-cyber-cyan">// OPERATOR IDENTIFICATION</h2>
+                    <h1 class="text-4xl sm:text-6xl font-orbitron font-extrabold tracking-tight text-white glitch" data-text="CHAN TECK CHENG">
+                        CHAN TECK CHENG
+                    </h1>
+                    <p class="text-xl sm:text-2xl font-orbitron text-cyber-purple font-semibold">
+                        Software Engineering Student & Full-Stack / Mobile Developer
+                    </p>
+                </div>
+
+                <div class="hud-panel p-6 rounded-lg text-gray-300 font-rajdhani text-lg leading-relaxed space-y-4">
+                    <div class="corner-tag corner-tl"></div><div class="corner-tag corner-tr"></div>
+                    <div class="corner-tag corner-bl"></div><div class="corner-tag corner-br"></div>
+                    <p>
+                        Passionate <strong class="text-cyber-cyan">Software Engineering student</strong> with hands-on experience in 
+                        <span class="text-white font-mono bg-cyber-cyan/10 px-1 border-b border-cyber-cyan">PHP</span>, 
+                        <span class="text-white font-mono bg-cyber-cyan/10 px-1 border-b border-cyber-cyan">Flutter</span>, 
+                        <span class="text-white font-mono bg-cyber-cyan/10 px-1 border-b border-cyber-cyan">MySQL</span>, 
+                        <span class="text-white font-mono bg-cyber-cyan/10 px-1 border-b border-cyber-cyan">React</span>, and multi-platform application design.
+                        Eager to leverage core algorithm design, modern dynamic frameworks, and robust IoT integration to build high-performance software solutions for industry applications.
+                    </p>
+                </div>
+
+                <!-- Quick Action HUD Buttons -->
+                <div class="flex flex-wrap gap-4 pt-2 font-orbitron">
+                    <button onclick="copyToClipboard('chanteckcheng8899@gmail.com', 'Email copied to clipboard!')" class="px-6 py-3 bg-cyber-cyan/20 border border-cyber-cyan text-cyber-cyan hover:bg-cyber-cyan hover:text-cyber-bg font-bold rounded tracking-wider transition flex items-center gap-2">
+                        <i class="fa-solid fa-envelope"></i> COPY EMAIL
+                    </button>
+                    <button onclick="copyToClipboard('+601118820117', 'Phone copied to clipboard!')" class="px-6 py-3 bg-cyber-purple/20 border border-cyber-purple text-cyber-purple hover:bg-cyber-purple hover:text-white font-bold rounded tracking-wider transition flex items-center gap-2">
+                        <i class="fa-solid fa-phone"></i> COPY PHONE
+                    </button>
+                    <a href="#projects" class="px-6 py-3 bg-white/5 border border-white/20 hover:border-white text-white font-bold rounded tracking-wider transition flex items-center gap-2">
+                        <i class="fa-solid fa-diagram-project"></i> VIEW PROJECTS
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Avatar & HUD Matrix Node -->
+            <div class="lg:col-span-4 flex justify-center">
+                <div class="hud-panel p-6 w-full max-w-sm text-center relative">
+                    <div class="corner-tag corner-tl"></div><div class="corner-tag corner-tr"></div>
+                    <div class="corner-tag corner-bl"></div><div class="corner-tag corner-br"></div>
+                    
+                    <!-- Sci-Fi Radar Graphic Ring + Image -->
+                    <div class="relative w-48 h-48 mx-auto mb-6 flex items-center justify-center">
+                        <div class="absolute inset-0 border-2 border-dashed border-cyber-cyan/40 rounded-full radar-sweep"></div>
+                        <div class="absolute inset-2 border border-cyber-purple/40 rounded-full"></div>
+                        <img src="https://placehold.co/400x400/081224/00f3ff?text=Chan+Teck+Cheng" alt="Chan Teck Cheng Avatar" class="w-40 h-40 rounded-full object-cover border-2 border-cyber-cyan shadow-[0_0_20px_rgba(0,243,255,0.4)]" onerror="this.src='https://placehold.co/400x400/081224/00f3ff?text=CTC'">
+                    </div>
+
+                    <!-- Meta HUD Info -->
+                    <div class="space-y-3 font-mono text-xs text-left bg-cyber-bg/70 p-4 rounded border border-cyber-cyan/20">
+                        <div class="flex justify-between border-b border-white/10 pb-1">
+                            <span class="text-gray-400">INSTITUTION:</span>
+                            <span class="text-cyber-cyan font-semibold">Raffles University</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/10 pb-1">
+                            <span class="text-gray-400">LOCATION:</span>
+                            <span class="text-white font-semibold">Iskandar Puteri, Johor</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/10 pb-1">
+                            <span class="text-gray-400">DEGREE SEEKING:</span>
+                            <span class="text-cyber-purple font-semibold">Diploma in IT</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">TIMELINE:</span>
+                            <span class="text-cyber-green font-semibold">2024 - 2026</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATS / CONTACT METRICS BAR -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="hud-panel p-5 flex items-center gap-4">
+                <div class="w-12 h-12 rounded bg-cyber-cyan/10 border border-cyber-cyan flex items-center justify-center text-cyber-cyan text-xl">
+                    <i class="fa-solid fa-phone-volume"></i>
+                </div>
+                <div>
+                    <div class="text-xs font-mono text-gray-400">COMM CHANNEL</div>
+                    <div class="text-lg font-orbitron text-white cursor-pointer hover:text-cyber-cyan" onclick="copyToClipboard('+601118820117', 'Phone copied!')">
+                        +60 11-18820117
+                    </div>
+                </div>
+            </div>
+
+            <div class="hud-panel p-5 flex items-center gap-4">
+                <div class="w-12 h-12 rounded bg-cyber-purple/10 border border-cyber-purple flex items-center justify-center text-cyber-purple text-xl">
+                    <i class="fa-solid fa-at"></i>
+                </div>
+                <div>
+                    <div class="text-xs font-mono text-gray-400">DIRECT EMAIL</div>
+                    <div class="text-sm font-mono text-cyber-cyan truncate cursor-pointer hover:underline" onclick="copyToClipboard('chanteckcheng8899@gmail.com', 'Email copied!')">
+                        chanteckcheng8899@gmail.com
+                    </div>
+                </div>
+            </div>
+
+            <div class="hud-panel p-5 flex items-center gap-4">
+                <div class="w-12 h-12 rounded bg-cyber-green/10 border border-cyber-green flex items-center justify-center text-cyber-green text-xl">
+                    <i class="fa-solid fa-location-crosshairs"></i>
+                </div>
+                <div>
+                    <div class="text-xs font-mono text-gray-400">BASE COORDINATES</div>
+                    <div class="text-sm font-rajdhani text-gray-200">
+                        Raffles University, Iskandar Puteri, Johor
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURED PROJECTS SECTION WITH FILTERING -->
+        <section id="projects" class="space-y-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-cyber-cyan/20 pb-4">
+                <div>
+                    <span class="text-cyber-cyan font-mono text-sm">// DEPLOYED MODULES</span>
+                    <h2 class="text-3xl sm:text-4xl font-orbitron font-bold text-white">SYSTEM PROJECTS</h2>
+                </div>
+                
+                <!-- Category Filters -->
+                <div class="flex flex-wrap gap-2 font-mono text-xs">
+                    <button onclick="filterProjects('all')" id="btn-all" class="proj-filter-btn px-4 py-2 rounded bg-cyber-cyan text-cyber-bg font-bold border border-cyber-cyan transition">
+                        ALL MODULES [4]
+                    </button>
+                    <button onclick="filterProjects('web-mobile')" id="btn-web-mobile" class="proj-filter-btn px-4 py-2 rounded bg-cyber-card text-gray-400 border border-cyber-cyan/30 hover:border-cyber-cyan transition">
+                        WEB & MOBILE
+                    </button>
+                    <button onclick="filterProjects('iot-cpp')" id="btn-iot-cpp" class="proj-filter-btn px-4 py-2 rounded bg-cyber-card text-gray-400 border border-cyber-cyan/30 hover:border-cyber-cyan transition">
+                        IOT & C++
+                    </button>
+                </div>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- Project 1: AeroDrive -->
+                <div class="proj-card hud-panel p-6 flex flex-col justify-between space-y-4" data-category="web-mobile">
+                    <div class="corner-tag corner-tl"></div><div class="corner-tag corner-tr"></div>
+                    <div class="corner-tag corner-bl"></div><div class="corner-tag corner-br"></div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="px-2 py-0.5 rounded text-xs font-mono bg-cyber-cyan/20 text-cyber-cyan border border-cyber-cyan/40">P2P FLEET & CAR RENTAL</span>
+                            <span class="text-xs font-mono text-gray-400"><i class="fa-solid fa-shield-halved text-cyber-green"></i> ACTIVE</span>
+                        </div>
+                        <h3 class="text-2xl font-orbitron font-bold text-white hover:text-cyber-cyan transition">AeroDrive</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Developed a cross-platform car rental and peer-to-peer fleet platform. Integrated Supabase PostgreSQL for authentication and real-time bookings. Built responsive UI and vehicle management dashboards with Tailwind CSS. Deployed native mobile application builds using Capacitor.
+                        </p>
+                    </div>
+
+                    <div class="space-y-4 pt-4 border-t border-white/10">
+                        <!-- Tech Stack Tags -->
+                        <div class="flex flex-wrap gap-2 font-mono text-xs">
+                            <span class="px-2 py-1 rounded bg-cyber-bg text-cyber-cyan border border-cyber-cyan/30">React</span>
+                            <span class="px-2 py-1 rounded bg-cyber-bg text-cyber-cyan border border-cyber-cyan/30">TypeScript</span>
+                            <span class="px-2 py-1 rounded bg-cyber-bg text-cyber-cyan border border-cyber-cyan/30">Tailwind CSS</span>
+                            <span class="px-2 py-1 rounded bg-cyber-bg text-cyber-purple border border-cyber-purple/30">Capacitor</span>
+                            <span class="px-2 py-1 rounded bg-cyber-bg text-cyber-green border border-cyber-green/30">Supabase</span>
+                        </div>
+
+                        <button onclick="openModal('AeroDrive', 'Cross-Platform Car Rental & Peer-to-Peer Fleet Platform', 'Integrated Supabase PostgreSQL for authentication and real-time bookings. Built responsive UI and vehicle management dashboards with Tailwind CSS. Deployed native mobile application builds using Capacitor.', ['React', 'TypeScript', 'Tailwind CSS', 'Capacitor', 'Supabase'])" class="w-full py-2 bg-cyber-cyan/10 hover:bg-cyber-cyan hover:text-cyber-bg text-cyber-cyan font-orbitron text-xs font-bold border border-cyber-cyan/40 rounded transition">
+                            <i class="fa-solid fa-expand mr-1"></i> VIEW MODULE SPECS
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Project 2: Smart Study Planner -->
+                <div class="proj-card hud-panel p-6 flex flex-col justify-between space-y-4" data-category="web-mobile">
+                    <div class="corner-tag corner-tl"></div><div class="corner-tag corner-tr"></div>
+                    <div class="corner-tag corner-bl"></div><div class="corner-tag corner-br"></div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="px-2 py-0.5 rounded text-xs font-mono bg-cyber-purple/20 text-cyber-purple border border-cyber-purple/40">MOBILE APPLICATION</span>
+                            <span class="text-xs font-mono text-gray-400"><i class="fa-solid fa-mobile-screen text-cyber-cyan"></i> FLUTTER</span>
+                        </div>
+                        <h3 class="text-2xl font-orbitron font-bold text-white hover:text-cyber-purple transition">Smart Study Planner</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Cross-platform productivity tool featuring secure user authentication, complete CRUD operations for dynamic schedule management, and an integrated gamified Achievement System to keep students engaged and productive.
+                        </p>
+                    </div>
+
+                    <div class="space-y-4 pt-4 border-t border-white/10">
+                        <!-- Tech Stack Tags -->
+                        <div class="flex flex-wrap gap-2 font-mono text-xs">
+                            <span class="px-2 py-1 rounded bg-cyber-bg text-cyber-purple border border-cyber-purple/30">Flutter</span>
+                            <span class="px-2 py-1 rounded bg-cyber-bg text-cyber-green border border-cyber-green/30">Supabase</span>
+                            <span class="px-2 py-1 rounded bg-cyber-bg text-gray-300 border border-gray-600">Android Studio</span>
+                            <span class="px-2 py-1 rounded bg-cyber-bg text-cyber-cyan border border-cyber-cyan/30">Dart</span>
+                        </div>
+
+                        <button onclick="openModal('Smart Study Planner', 'Gamified Academic Management Mobile App', 'Built with user authentication, dynamic study schedule CRUD operations, and an integrated Achievement System for task and study tracking.', ['Flutter', 'Supabase', 'Android Studio', 'Dart'])" class="w-full py-2 bg-cyber-purple/10 hover:bg-cyber-purple hover:text-white text-cyber-purple font-orbitron text-xs font-bold border border-cyber-purple/40 rounded transition">
+                            <i class="fa-solid fa-expand mr-1"></i> VIEW MODULE SPECS
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Project 3: IoT Game Station -->
+                <div class="proj-card hud-panel p-6 flex flex-col justify-between space-y-4" data-category="iot-cpp">
+                    <div class="corner-tag corner-tl"></div><div class="corner-tag corner-tr"></div>
+                    <div class="corner-tag corner-bl"></div><div class="corner-tag corner-br"></div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="px-2 py-0.5 rounded text-xs font-mono bg-cyber-green/20 text-cyber-green border border-cyber-green/40">EMBEDDED HARDWARE</span>
+                            <span class="text-xs font-mono text-gray-400"><i class="fa-solid fa-microchip text-cyber-green"></i> ESP32</span>
+                        </div>
+                        <h3 class="text-2xl font-orbitron font-bold text-white hover:text-cyber-green transition">IoT Game Station</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Hardware-software integration featuring a push button controller, OLED display visual engine, passive buzzer audio system, Bluetooth wireless controller integration, and custom Snake Game logic.
+                        </p>
+                    </div>
+
+                    <div class="space-y-4 pt-4 border-t border-white/10">
+                        <!-- Tech Stack Tags -->
+                        <div class="flex flex-wrap gap-2 font-mono text-xs">
+                            <span class="px-2 py-1 rounded bg-cyber-bg text-cyber-green border border-cyber-green/30">ESP32</span>
+                            <span class="px-2 py-1 rounded bg-cyber-bg text-cyber-cyan border border-cyber-cyan/30">Arduino IDE</span>
+                            <span class="px-2 py-1 rounded bg-cyber-bg text-cyber-purple border border-cyber-purple/30">C++</span>
+                            <span class="px-2 py-1 rounded bg-cyber-bg text-gray-300 border border-gray-600">OLED Display</span>
+                            <span class="px-2 py-1 rounded bg-cyber-bg text-gray-300 border border-gray-600">Bluetooth</span>
+                        </div>
+
+                        <button onclick="openModal('IoT Game Station', 'Embedded Microcontroller Gaming System', 'Hardware-software integration featuring a push button controller, OLED display, buzzer sound design, Bluetooth connectivity, and custom Snake Game hardware logic.', ['ESP32', 'Arduino IDE', 'C++', 'OLED', 'Bluetooth'])" class="w-full py-2 bg-cyber-green/10 hover:bg-cyber-green hover:text-cyber-bg text-cyber-green font-orbitron text-xs font-bold border border-cyber-green/40 rounded transition">
+                            <i class="fa-solid fa-expand mr-1"></i> VIEW MODULE SPECS
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Project 4: C++ Snake Game -->
+                <div class="proj-card hud-panel p-6 flex flex-col justify-between space-y-4" data-category="iot-cpp">
+                    <div class="corner-tag corner-tl"></div><div class="corner-tag corner-tr"></div>
+                    <div class="corner-tag corner-bl"></div><div class="corner-tag corner-br"></div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="px-2 py-0.5 rounded text-xs font-mono bg-cyber-pink/20 text-cyber-pink border border-cyber-pink/40">SOFTWARE CORE / OOP</span>
+                            <span class="text-xs font-mono text-gray-400"><i class="fa-solid fa-code text-cyber-pink"></i> C++ STL</span>
+                        </div>
+                        <h3 class="text-2xl font-orbitron font-bold text-white hover:text-cyber-pink transition">C++ Snake Game</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Developed using C++ Object-Oriented Programming principles. Implemented complete game logic, score system, collision detection, start/pause/game over menu screens, dynamic difficulty adjustment, and modular STL containers (vector, queue).
+                        </p>
+                    </div>
+
+                    <div class="space-y-4 pt-4 border-t border-white/10">
+                        <!-- Tech Stack Tags -->
+                        <div class="flex flex-wrap gap-2 font-mono text-xs">
+                            <span class="px-2 py-1 rounded bg-cyber-bg text-cyber-pink border border-cyber-pink/30">C++</span>
+                            <span class="px-2 py-1 rounded bg-cyber-bg text-cyber-cyan border border-cyber-cyan/30">OOP Architecture</span>
+                            <span class="px-2 py-1 rounded bg-cyber-bg text-cyber-purple border border-cyber-purple/30">STL Containers</span>
+                            <span class="px-2 py-1 rounded bg-cyber-bg text-gray-300 border border-gray-600">Algorithms</span>
+                        </div>
+
+                        <button onclick="openModal('C++ Snake Game', 'Object-Oriented Desktop Architecture', 'Developed using C++ and Object-Oriented Programming principles. Implemented game logic, score system, collision detection, modular STL containers (vector, queue), and dynamic difficulty adjustment.', ['C++', 'OOP', 'STL Vectors & Queues', 'Modular Design'])" class="w-full py-2 bg-cyber-pink/10 hover:bg-cyber-pink hover:text-white text-cyber-pink font-orbitron text-xs font-bold border border-cyber-pink/40 rounded transition">
+                            <i class="fa-solid fa-expand mr-1"></i> VIEW MODULE SPECS
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SKILLS MATRIX SECTION -->
+        <section id="skills" class="space-y-8">
+            <div class="border-b border-cyber-cyan/20 pb-4">
+                <span class="text-cyber-cyan font-mono text-sm">// CAPABILITY MATRIX</span>
+                <h2 class="text-3xl sm:text-4xl font-orbitron font-bold text-white">TECHNICAL PROFICIENCIES</h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                <!-- Programming Languages -->
+                <div class="hud-panel p-6 space-y-6">
+                    <div class="corner-tag corner-tl"></div><div class="corner-tag corner-tr"></div>
+                    <div class="corner-tag corner-bl"></div><div class="corner-tag corner-br"></div>
+
+                    <h3 class="text-xl font-orbitron font-bold text-cyber-cyan flex items-center gap-2">
+                        <i class="fa-solid fa-code"></i> LANGUAGES
+                    </h3>
+
+                    <div class="space-y-4 font-mono text-sm">
+                        <!-- Skill Item -->
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-200">PHP & MySQL</span>
+                                <span class="text-cyber-cyan">85%</span>
+                            </div>
+                            <div class="w-full bg-cyber-bg h-2 rounded border border-cyber-cyan/30">
+                                <div class="bg-cyber-cyan h-full rounded" style="width: 85%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-200">C++ / OOP</span>
+                                <span class="text-cyber-cyan">88%</span>
+                            </div>
+                            <div class="w-full bg-cyber-bg h-2 rounded border border-cyber-cyan/30">
+                                <div class="bg-cyber-cyan h-full rounded" style="width: 88%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-200">Dart / Flutter</span>
+                                <span class="text-cyber-cyan">82%</span>
+                            </div>
+                            <div class="w-full bg-cyber-bg h-2 rounded border border-cyber-cyan/30">
+                                <div class="bg-cyber-cyan h-full rounded" style="width: 82%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-200">JavaScript / HTML / CSS</span>
+                                <span class="text-cyber-cyan">90%</span>
+                            </div>
+                            <div class="w-full bg-cyber-bg h-2 rounded border border-cyber-cyan/30">
+                                <div class="bg-cyber-cyan h-full rounded" style="width: 90%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-200">Python & Java</span>
+                                <span class="text-cyber-cyan">75%</span>
+                            </div>
+                            <div class="w-full bg-cyber-bg h-2 rounded border border-cyber-cyan/30">
+                                <div class="bg-cyber-cyan h-full rounded" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Frameworks & Tools -->
+                <div class="hud-panel p-6 space-y-6">
+                    <div class="corner-tag corner-tl"></div><div class="corner-tag corner-tr"></div>
+                    <div class="corner-tag corner-bl"></div><div class="corner-tag corner-br"></div>
+
+                    <h3 class="text-xl font-orbitron font-bold text-cyber-purple flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group"></i> FRAMEWORKS & TOOLS
+                    </h3>
+
+                    <div class="grid grid-cols-2 gap-3 font-mono text-xs">
+                        <div class="p-3 bg-cyber-bg/80 border border-cyber-purple/30 rounded flex items-center gap-2">
+                            <i class="fa-brands fa-react text-cyber-cyan"></i> React.js
+                        </div>
+                        <div class="p-3 bg-cyber-bg/80 border border-cyber-purple/30 rounded flex items-center gap-2">
+                            <i class="fa-solid fa-mobile-button text-cyber-purple"></i> Flutter
+                        </div>
+                        <div class="p-3 bg-cyber-bg/80 border border-cyber-purple/30 rounded flex items-center gap-2">
+                            <i class="fa-solid fa-database text-cyber-green"></i> Supabase
+                        </div>
+                        <div class="p-3 bg-cyber-bg/80 border border-cyber-purple/30 rounded flex items-center gap-2">
+                            <i class="fa-solid fa-wind text-cyber-cyan"></i> Tailwind CSS
+                        </div>
+                        <div class="p-3 bg-cyber-bg/80 border border-cyber-purple/30 rounded flex items-center gap-2">
+                            <i class="fa-solid fa-bolt text-cyber-pink"></i> Capacitor
+                        </div>
+                        <div class="p-3 bg-cyber-bg/80 border border-cyber-purple/30 rounded flex items-center gap-2">
+                            <i class="fa-brands fa-android text-cyber-green"></i> Android Studio
+                        </div>
+                        <div class="p-3 bg-cyber-bg/80 border border-cyber-purple/30 rounded flex items-center gap-2">
+                            <i class="fa-solid fa-microchip text-cyber-cyan"></i> Arduino IDE
+                        </div>
+                        <div class="p-3 bg-cyber-bg/80 border border-cyber-purple/30 rounded flex items-center gap-2">
+                            <i class="fa-solid fa-server text-cyber-purple"></i> MySQL DB
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Key Expertise & Competencies -->
+                <div class="hud-panel p-6 space-y-6">
+                    <div class="corner-tag corner-tl"></div><div class="corner-tag corner-tr"></div>
+                    <div class="corner-tag corner-bl"></div><div class="corner-tag corner-br"></div>
+
+                    <h3 class="text-xl font-orbitron font-bold text-cyber-green flex items-center gap-2">
+                        <i class="fa-solid fa-brain"></i> CORE COMPETENCIES
+                    </h3>
+
+                    <div class="space-y-3 font-rajdhani text-base">
+                        <div class="p-3 bg-cyber-bg/60 border-l-2 border-cyber-cyan rounded">
+                            <div class="font-orbitron text-sm font-bold text-white">UI / UX Design</div>
+                            <div class="text-gray-400 text-xs font-mono">Modern responsive interfaces & fluid user interaction design.</div>
+                        </div>
+                        <div class="p-3 bg-cyber-bg/60 border-l-2 border-cyber-purple rounded">
+                            <div class="font-orbitron text-sm font-bold text-white">OOP Architecture</div>
+                            <div class="text-gray-400 text-xs font-mono">Clean code structure, modular design pattern, STL utilization.</div>
+                        </div>
+                        <div class="p-3 bg-cyber-bg/60 border-l-2 border-cyber-green rounded">
+                            <div class="font-orbitron text-sm font-bold text-white">Cross-Platform Development</div>
+                            <div class="text-gray-400 text-xs font-mono">Targeting iOS, Android, and Web with Flutter & React/Capacitor.</div>
+                        </div>
+                        <div class="p-3 bg-cyber-bg/60 border-l-2 border-cyber-pink rounded">
+                            <div class="font-orbitron text-sm font-bold text-white">IoT Hardware Integration</div>
+                            <div class="text-gray-400 text-xs font-mono">ESP32 microcontrollers, OLED displays, and Bluetooth protocols.</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- EDUCATION & LANGUAGES SECTION -->
+        <section id="education" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Education Node -->
+            <div class="lg:col-span-8 hud-panel p-6 space-y-6">
+                <div class="corner-tag corner-tl"></div><div class="corner-tag corner-tr"></div>
+                <div class="corner-tag corner-bl"></div><div class="corner-tag corner-br"></div>
+
+                <div class="flex justify-between items-center border-b border-cyber-cyan/20 pb-3">
+                    <h3 class="text-2xl font-orbitron font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-graduation-cap text-cyber-cyan"></i> ACADEMIC HISTORY
+                    </h3>
+                    <span class="font-mono text-xs text-cyber-cyan">RECORD: VERIFIED</span>
+                </div>
+
+                <div class="relative border-l-2 border-cyber-cyan/40 pl-6 ml-2 space-y-4">
+                    <!-- Timeline Node -->
+                    <div class="relative">
+                        <div class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-cyber-cyan border-4 border-cyber-bg"></div>
+                        <div class="font-mono text-xs text-cyber-cyan">2024 — 2026</div>
+                        <h4 class="text-xl font-orbitron font-bold text-white">Diploma in Information Technology</h4>
+                        <div class="text-cyber-purple font-semibold font-rajdhani">Raffles University</div>
+                        <p class="text-gray-300 text-sm mt-2 font-rajdhani">
+                            Focused on core software engineering principles, full-stack application development, database architecture, dynamic algorithm design, and IoT system programming.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Language Proficiency Node -->
+            <div class="lg:col-span-4 hud-panel p-6 space-y-6">
+                <div class="corner-tag corner-tl"></div><div class="corner-tag corner-tr"></div>
+                <div class="corner-tag corner-bl"></div><div class="corner-tag corner-br"></div>
+
+                <h3 class="text-xl font-orbitron font-bold text-white border-b border-cyber-cyan/20 pb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-language text-cyber-purple"></i> LANGUAGES
+                </h3>
+
+                <div class="space-y-4 font-mono text-sm">
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-white">English</span>
+                            <span class="text-cyber-cyan">Professional</span>
+                        </div>
+                        <div class="w-full bg-cyber-bg h-1.5 rounded border border-cyber-cyan/30">
+                            <div class="bg-cyber-cyan h-full rounded" style="width: 90%"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-white">Chinese (Mandarin)</span>
+                            <span class="text-cyber-purple">Native / Fluent</span>
+                        </div>
+                        <div class="w-full bg-cyber-bg h-1.5 rounded border border-cyber-purple/30">
+                            <div class="bg-cyber-purple h-full rounded" style="width: 100%"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-white">Malay</span>
+                            <span class="text-cyber-green">Fluent</span>
+                        </div>
+                        <div class="w-full bg-cyber-bg h-1.5 rounded border border-cyber-green/30">
+                            <div class="bg-cyber-green h-full rounded" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ACADEMIC REFERENCES SECTION -->
+        <section id="references" class="space-y-8">
+            <div class="border-b border-cyber-cyan/20 pb-4">
+                <span class="text-cyber-cyan font-mono text-sm">// FACULTY VERIFICATION</span>
+                <h2 class="text-3xl sm:text-4xl font-orbitron font-bold text-white">ACADEMIC REFERENCES</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- Reference Card 1 -->
+                <div class="hud-panel p-6 flex flex-col justify-between space-y-4">
+                    <div class="corner-tag corner-tl"></div><div class="corner-tag corner-tr"></div>
+                    <div class="corner-tag corner-bl"></div><div class="corner-tag corner-br"></div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="w-14 h-14 rounded-full bg-cyber-cyan/10 border border-cyber-cyan flex items-center justify-center text-cyber-cyan text-2xl font-orbitron font-bold shrink-0">
+                            MN
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-orbitron font-bold text-white">MOHD NAJIB BIN MOHD SALLEH</h3>
+                            <div class="text-cyber-cyan font-mono text-xs">Lecturer // Faculty of Information Technology</div>
+                            <div class="text-gray-400 font-rajdhani text-sm">Raffles University</div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-white/10 flex justify-between items-center">
+                        <span class="font-mono text-xs text-gray-400 truncate max-w-[220px]">
+                            Mohd.Najib@Raffles-University.edu.my
+                        </span>
+                        <a href="mailto:Mohd.Najib@Raffles-University.edu.my" class="px-4 py-1.5 bg-cyber-cyan/20 hover:bg-cyber-cyan hover:text-cyber-bg text-cyber-cyan font-mono text-xs font-bold border border-cyber-cyan/40 rounded transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-paper-plane"></i> CONTACT
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Reference Card 2 -->
+                <div class="hud-panel p-6 flex flex-col justify-between space-y-4">
+                    <div class="corner-tag corner-tl"></div><div class="corner-tag corner-tr"></div>
+                    <div class="corner-tag corner-bl"></div><div class="corner-tag corner-br"></div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="w-14 h-14 rounded-full bg-cyber-purple/10 border border-cyber-purple flex items-center justify-center text-cyber-purple text-2xl font-orbitron font-bold shrink-0">
+                            CY
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-orbitron font-bold text-white">CHOO YEN LEE</h3>
+                            <div class="text-cyber-purple font-mono text-xs">Lecturer // Faculty of Information Technology</div>
+                            <div class="text-gray-400 font-rajdhani text-sm">Raffles University</div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-white/10 flex justify-between items-center">
+                        <span class="font-mono text-xs text-gray-400 truncate max-w-[220px]">
+                            YEN.LEE.CHOO@Raffles-University.edu.my
+                        </span>
+                        <a href="mailto:YEN.LEE.CHOO@Raffles-University.edu.my" class="px-4 py-1.5 bg-cyber-purple/20 hover:bg-cyber-purple hover:text-white text-cyber-purple font-mono text-xs font-bold border border-cyber-purple/40 rounded transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-paper-plane"></i> CONTACT
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- INTERACTIVE CYBER TERMINAL CLI -->
+        <section id="terminal" class="hud-panel p-6 font-mono space-y-4">
+            <div class="corner-tag corner-tl"></div><div class="corner-tag corner-tr"></div>
+            <div class="corner-tag corner-bl"></div><div class="corner-tag corner-br"></div>
+
+            <div class="flex justify-between items-center border-b border-cyber-cyan/20 pb-2">
+                <div class="flex items-center space-x-2">
+                    <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-yellow-500 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
+                    <span class="text-xs text-gray-400 ml-2">CTC_TERMINAL_V2.6 -- BASH SIMULATOR</span>
+                </div>
+                <span class="text-xs text-cyber-cyan">TYPE 'help' FOR COMMANDS</span>
+            </div>
+
+            <div id="terminalConsole" class="h-48 overflow-y-auto space-y-2 text-xs text-cyber-cyan/90 pr-2">
+                <div>[SYSTEM INITIALIZED] Welcome to Chan Teck Cheng's Cyber Terminal.</div>
+                <div>Type <span class="text-cyber-green">'help'</span> to view available system commands.</div>
+            </div>
+
+            <!-- Terminal Input -->
+            <form id="terminalForm" onsubmit="handleTerminalCommand(event)" class="flex items-center gap-2 pt-2 border-t border-cyber-cyan/20">
+                <span class="text-cyber-green font-bold">visitor@ctc-hud:~$</span>
+                <input type="text" id="terminalInput" class="flex-1 bg-transparent text-white outline-none font-mono text-xs placeholder-gray-600" placeholder="enter command..." autocomplete="off">
+                <button type="submit" class="text-xs px-3 py-1 bg-cyber-cyan/20 text-cyber-cyan border border-cyber-cyan/40 rounded hover:bg-cyber-cyan hover:text-cyber-bg transition">
+                    EXECUTE
+                </button>
+            </form>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="relative z-10 border-t border-cyber-cyan/20 bg-cyber-bg/90 py-8 px-4 text-center font-mono text-xs text-gray-400 space-y-2">
+        <div>DESIGNED & DEVELOPED BY <span class="text-cyber-cyan font-bold">CHAN TECK CHENG</span> // SOFTWARE ENGINEERING</div>
+        <div class="text-gray-500">RAFFLES UNIVERSITY Iskandar Puteri, Johor, Malaysia © 2026. ALL RIGHTS RESERVED.</div>
+    </footer>
+
+    <!-- INTERACTIVE PROJECT MODAL -->
+    <div id="projectModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="hud-panel w-full max-w-2xl p-6 sm:p-8 space-y-6 relative">
+            <div class="corner-tag corner-tl"></div><div class="corner-tag corner-tr"></div>
+            <div class="corner-tag corner-bl"></div><div class="corner-tag corner-br"></div>
+
+            <div class="flex justify-between items-start border-b border-cyber-cyan/20 pb-4">
+                <div>
+                    <span id="modalCategory" class="text-xs font-mono text-cyber-cyan">// MODULE SPECIFICATION</span>
+                    <h3 id="modalTitle" class="text-2xl sm:text-3xl font-orbitron font-bold text-white">Project Title</h3>
+                </div>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-cyber-cyan text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <p id="modalDesc" class="text-gray-300 font-rajdhani text-base sm:text-lg leading-relaxed">
+                Project description goes here...
+            </p>
+
+            <div class="space-y-2">
+                <span class="text-xs font-mono text-cyber-purple block">// INTEGRATED TECHNOLOGIES</span>
+                <div id="modalTech" class="flex flex-wrap gap-2 font-mono text-xs">
+                    <!-- Tech pills -->
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-white/10 flex justify-end">
+                <button onclick="closeModal()" class="px-6 py-2 bg-cyber-cyan text-cyber-bg font-orbitron text-xs font-bold rounded hover:bg-white transition">
+                    CLOSE SPECIFICATION
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION TOAST HUD -->
+    <div id="cyberToast" class="fixed bottom-6 right-6 z-50 hidden hud-panel px-5 py-3 border border-cyber-cyan bg-cyber-card text-cyber-cyan font-mono text-xs shadow-[0_0_20px_rgba(0,243,255,0.4)] flex items-center gap-3">
+        <i class="fa-solid fa-circle-check text-cyber-green text-base"></i>
+        <span id="toastMsg">Action completed successfully.</span>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Sound feedback system using Web Audio API (no external sound files required)
+        let soundEnabled = true;
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playBeep(freq = 600, type = 'sine', duration = 0.08) {
+            if (!soundEnabled) return;
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {
+                console.log('Audio init postponed until user interaction.');
+            }
+        }
+
+        function toggleSoundEffect() {
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById('soundBtn');
+            btn.innerHTML = soundEnabled 
+                ? '<i class="fa-solid fa-volume-high"></i> <span class="hidden sm:inline">AUDIO: ON</span>' 
+                : '<i class="fa-solid fa-volume-xmark"></i> <span class="hidden sm:inline">AUDIO: OFF</span>';
+            showToast(soundEnabled ? 'Audio feedback enabled' : 'Audio feedback muted');
+        }
+
+        // Toggle CRT Scanlines
+        function toggleScanlines() {
+            const scanlines = document.getElementById('scanlineLayer');
+            scanlines.classList.toggle('hidden');
+            playBeep(800, 'square');
+            showToast('Toggled display CRT scanline grid');
+        }
+
+        // Clipboard Copy Helper
+        function copyToClipboard(text, message) {
+            playBeep(750);
+            const input = document.createElement('textarea');
+            input.value = text;
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
+            showToast(message);
+        }
+
+        // Cyber Toast HUD
+        function showToast(msg) {
+            const toast = document.getElementById('cyberToast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Project Filter Logic
+        function filterProjects(category) {
+            playBeep(500);
+            const cards = document.querySelectorAll('.proj-card');
+            const btns = document.querySelectorAll('.proj-filter-btn');
+
+            btns.forEach(btn => {
+                btn.classList.remove('bg-cyber-cyan', 'text-cyber-bg', 'font-bold');
+                btn.classList.add('bg-cyber-card', 'text-gray-400');
+            });
+
+            const activeBtn = document.getElementById(`btn-${category}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-cyber-card', 'text-gray-400');
+                activeBtn.classList.add('bg-cyber-cyan', 'text-cyber-bg', 'font-bold');
+            }
+
+            cards.forEach(card => {
+                const cardCat = card.getAttribute('data-category');
+                if (category === 'all' || cardCat === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Project Modal Spec Viewer
+        function openModal(title, subtitle, desc, techArray) {
+            playBeep(900, 'sine');
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalCategory').innerText = `// ${subtitle.toUpperCase()}`;
+            document.getElementById('modalDesc').innerText = desc;
+            
+            const techContainer = document.getElementById('modalTech');
+            techContainer.innerHTML = '';
+            techArray.forEach(tech => {
+                const pill = document.createElement('span');
+                pill.className = 'px-3 py-1 rounded bg-cyber-bg text-cyber-cyan border border-cyber-cyan/40';
+                pill.innerText = tech;
+                techContainer.appendChild(pill);
+            });
+
+            document.getElementById('projectModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            playBeep(400);
+            document.getElementById('projectModal').classList.add('hidden');
+        }
+
+        // Terminal Simulator Logic
+        function handleTerminalCommand(e) {
+            e.preventDefault();
+            playBeep(650);
+            const input = document.getElementById('terminalInput');
+            const consoleBox = document.getElementById('terminalConsole');
+            const cmd = input.value.trim().toLowerCase();
+            input.value = '';
+
+            if (!cmd) return;
+
+            const echoLine = document.createElement('div');
+            echoLine.className = 'text-gray-400';
+            echoLine.innerHTML = `<span class="text-cyber-green">visitor@ctc-hud:~$</span> ${cmd}`;
+            consoleBox.appendChild(echoLine);
+
+            const resLine = document.createElement('div');
+            resLine.className = 'text-cyber-cyan font-mono';
+
+            switch (cmd) {
+                case 'help':
+                    resLine.innerHTML = `Available commands:<br>
+                    - <span class="text-cyber-green">about</span> : View bio and overview<br>
+                    - <span class="text-cyber-green">skills</span> : List primary tech stack<br>
+                    - <span class="text-cyber-green">projects</span> : Show deployed software modules<br>
+                    - <span class="text-cyber-green">contact</span> : Display direct email & phone<br>
+                    - <span class="text-cyber-green">clear</span> : Reset terminal output window`;
+                    break;
+                case 'about':
+                    resLine.innerText = 'Chan Teck Cheng: Software Engineering Student at Raffles University. Proficient in PHP, Flutter, React, Supabase, and C++. Seeking software engineering internships.';
+                    break;
+                case 'skills':
+                    resLine.innerText = 'Languages: PHP, Dart, C++, JS, Python, Java | Frameworks: React, Flutter, Supabase, Tailwind, Capacitor, Android Studio, Arduino IDE.';
+                    break;
+                case 'projects':
+                    resLine.innerText = '1. AeroDrive (React/Capacitor/Supabase)\n2. Smart Study Planner (Flutter/Supabase)\n3. IoT Game Station (ESP32/C++)\n4. C++ Snake Game (OOP/STL)';
+                    break;
+                case 'contact':
+                    resLine.innerText = 'Phone: +60 11-18820117 | Email: chanteckcheng8899@gmail.com | Location: Iskandar Puteri, Johor, Malaysia.';
+                    break;
+                case 'clear':
+                    consoleBox.innerHTML = '';
+                    return;
+                default:
+                    resLine.className = 'text-red-400';
+                    resLine.innerText = `Command not recognized: '${cmd}'. Type 'help' for options.`;
+            }
+
+            consoleBox.appendChild(resLine);
+            consoleBox.scrollTop = consoleBox.scrollHeight;
+        }
+
+        // Particle Net Interactive Background
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 120 };
+
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            const count = Math.floor((canvas.width * canvas.height) / 18000);
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.8,
+                    vy: (Math.random() - 0.5) * 0.8,
+                    size: Math.random() * 2 + 1
+                });
+            }
+        }
+
+        window.addEventListener('resize', initCanvas);
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+        });
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                let p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                ctx.fillStyle = 'rgba(0, 243, 255, 0.4)';
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Connect nearby particles
+                for (let j = i + 1; j < particles.length; j++) {
+                    let p2 = particles[j];
+                    let dx = p.x - p2.x;
+                    let dy = p.y - p2.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 100) {
+                        ctx.strokeStyle = `rgba(0, 243, 255, ${0.15 - dist / 1000})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.onload = function() {
+            initCanvas();
+            animateParticles();
+            // Sound play listener binding
+            document.querySelectorAll('button, a').forEach(el => {
+                el.addEventListener('mouseenter', () => playBeep(900, 'sine', 0.03));
+            });
+        };
+    </script>
+</body>
+</html>
